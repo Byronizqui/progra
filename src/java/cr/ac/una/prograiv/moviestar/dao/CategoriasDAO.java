@@ -7,6 +7,7 @@ package cr.ac.una.prograiv.moviestar.dao;
 
 import cr.ac.una.prograiv.moviestar.domain.Categorias;
 import cr.ac.una.prograiv.moviestar.utils.HibernateUtil;
+import java.util.HashSet;
 import java.util.List;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
@@ -63,12 +64,20 @@ public class CategoriasDAO extends HibernateUtil implements IBaseDAO<Categorias,
     @Override
     public Categorias findByOther(Categorias c) {
         Categorias categoria = null;
-
+        List<Categorias> lista = findAll();
+        
         try {
             iniciaOperacion();
-            categoria = (Categorias) getSesion().get(Categorias.class, c);
+            //List<Categorias> lista = findAll();
+            for (Categorias categorias : lista) {
+                if(categorias.getCNombre() == null ? c.getCNombre() == null : categorias.getCNombre().equals(c.getCNombre()))
+                    return categorias;
+            }
         } finally {
             getSesion().close();
+        }
+        for (int i=0; i < lista.size(); i++){
+            lista.get(i).setCatalogoses(null);
         }
         return categoria;
     }
@@ -80,6 +89,9 @@ public class CategoriasDAO extends HibernateUtil implements IBaseDAO<Categorias,
         try {
             iniciaOperacion();
             listaCategorias = getSesion().createQuery("from Categorias").list();
+            listaCategorias.stream().forEach((cat) -> {
+                cat.getCatalogoses().size();
+            });
         } finally {
             getSesion().close();
         }
@@ -88,13 +100,38 @@ public class CategoriasDAO extends HibernateUtil implements IBaseDAO<Categorias,
         }
         return listaCategorias;
     }
+    
+    @Override
+    public Categorias findById(Integer id) {
+        Categorias cat = null;
+
+        try {
+            iniciaOperacion();
+            cat = (Categorias) getSesion().get(Categorias.class, id);
+            cat.getCatalogoses().size();
+        } finally {
+            getSesion().close();
+        }
+        return cat;
+//         Categorias cat = null;
+//         List<Categorias> lista = findAll();
+//         for(int i= 0; i<=lista.size(); i++){
+//             if(lista.get(i).getCId() == id)
+//                 lista.get(i).setCatalogoses(null);
+//                 cat = lista.get(i);
+//         }
+//         return cat;
+    }
+    
 
     @Override
     public List<Categorias> findAllByOther(String o) {
          List<Categorias> lista= null;
+         int val= Integer.parseInt(o);
        try {
             iniciaOperacion();
-            Query query = getSesion().createQuery("from Categorias where = '"+ o +"'");
+            String text = "from Categorias where c_Id= '"+ val +"'";
+            Query query = getSesion().createQuery(text);
             lista= query.list();
         } finally {
             getSesion().close();
@@ -104,5 +141,19 @@ public class CategoriasDAO extends HibernateUtil implements IBaseDAO<Categorias,
     }
 
    
-    
+    public List<Categorias> findAllByName(String o) {
+         List<Categorias> lista= null;
+       try {
+            iniciaOperacion();
+            Query query = getSesion().createQuery("from Categorias where c_nombre = '"+ o +"'");
+            lista= query.list();
+            lista.stream().forEach((cat) -> {
+                cat.getCatalogoses().size();
+            });
+        } finally {
+            getSesion().close();
+        }
+       
+        return lista;
+    }
 }

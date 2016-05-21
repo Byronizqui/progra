@@ -57,6 +57,16 @@ public class MediaServlet extends HttpServlet {
                     json = new Gson().toJson(mBL.findAllByOther("slider"));
                     out.print(json);
                     break; 
+                case "insertar":
+                    m.setUrl(request.getParameter("url"));
+                    m.setCategoria(request.getParameter("cater"));
+                    m.setCatalogo(request.getParameter("cata"));
+                    mBL.save(m);
+                    out.print("C~");
+                case "logo":
+                    json = new Gson().toJson(mBL.findAllByOther("logo"));
+                    out.print(json);
+                    break;
                 default:
                     out.print("E~No se indico la acción que se desea realizar");
                     break;

@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated May 8, 2016 3:08:06 AM by Hibernate Tools 4.3.1 -->
+<!-- Generated 14/05/2016 08:58:01 AM by Hibernate Tools 4.3.1 -->
 <hibernate-mapping>
-    <class name="cr.ac.una.prograiv.moviestar.domain.Usuarios" table="Usuarios" catalog="MovieStar" optimistic-lock="version">
+    <class name="cr.ac.una.prograiv.moviestar.domain.Usuarios" table="usuarios" catalog="moviestar" optimistic-lock="version">
         <id name="UId" type="int">
             <column name="u_id" />
             <generator class="assigned" />
@@ -21,7 +21,7 @@
             <column name="u_apellidos" length="25" />
         </property>
         <property name="UCorreo" type="string">
-            <column name="u_correo" length="15" unique="true" />
+            <column name="u_correo" length="25" unique="true" />
         </property>
         <property name="UFechaNac" type="date">
             <column name="u_fechaNac" length="10" />
@@ -36,9 +36,9 @@
             <column name="u_telCel" length="10" />
         </property>
         <property name="UTipo" type="string">
-            <column name="u_tipo" length="10" />
+            <column name="u_tipo" length="15" />
         </property>
-        <set name="ordeneses" table="Ordenes" inverse="true" lazy="true" fetch="select">
+        <set name="ordeneses" table="ordenes" inverse="true" lazy="true" fetch="select">
             <key>
                 <column name="o_usuario" />
             </key>

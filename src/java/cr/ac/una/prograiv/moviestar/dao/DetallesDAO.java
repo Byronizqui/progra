@@ -74,6 +74,19 @@ public class DetallesDAO extends HibernateUtil implements IBaseDAO<Detalles, Int
     }
 
     @Override
+    public Detalles findById(Integer id) {
+        Detalles det = null;
+
+        try {
+            iniciaOperacion();
+            det = (Detalles) getSesion().get(Detalles.class, id);
+        } finally {
+            getSesion().close();
+        }
+        return det;
+    }
+    
+    @Override
     public List<Detalles> findAll() {
         List<Detalles> listaDetalles;
         try {
@@ -93,6 +106,21 @@ public class DetallesDAO extends HibernateUtil implements IBaseDAO<Detalles, Int
             iniciaOperacion();
             Query query = getSesion().createQuery("from Detalles where = '"+ o +"'");
             lista= query.list();
+        } finally {
+            getSesion().close();
+        }
+       
+        return lista;
+    }
+    
+    @Override
+    public List<Detalles> findAllByName(String o) {
+         List<Detalles> lista= null;
+       try {
+            iniciaOperacion();
+            Query query = getSesion().createQuery("from Detalles where c_nombre = '"+ o +"'");
+            lista= query.list();
+            
         } finally {
             getSesion().close();
         }

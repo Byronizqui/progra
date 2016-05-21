@@ -7,6 +7,7 @@ package cr.ac.una.prograiv.moviestar.dao;
 
 import cr.ac.una.prograiv.moviestar.domain.Catalogos;
 import cr.ac.una.prograiv.moviestar.utils.HibernateUtil;
+import java.util.ArrayList;
 import java.util.List;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
@@ -62,6 +63,20 @@ public class CatalogosDAO extends HibernateUtil implements IBaseDAO<Catalogos, I
             getSesion().close();
         }
     }
+    
+    @Override
+    public Catalogos findById(Integer id) {
+        Catalogos cat = null;
+
+        try {
+            iniciaOperacion();
+            cat = (Catalogos) getSesion().get(Catalogos.class, id);
+            cat.getDetalleses().size();
+        } finally {
+            getSesion().close();
+        }
+        return cat;
+    }
 
     @Override
     public Catalogos findByOther(Catalogos o) {
@@ -70,6 +85,7 @@ public class CatalogosDAO extends HibernateUtil implements IBaseDAO<Catalogos, I
         try {
             iniciaOperacion();
             catalogos = (Catalogos) getSesion().get(Catalogos.class, o);
+            catalogos.getDetalleses().size();
         } finally {
             getSesion().close();
         }
@@ -82,11 +98,11 @@ public class CatalogosDAO extends HibernateUtil implements IBaseDAO<Catalogos, I
         try {
             iniciaOperacion();
             listaCatalogos = getSesion().createQuery("from Catalogos").list();
-        } finally {
+            listaCatalogos.stream().forEach((cat) -> {
+                cat.getDetalleses().size();
+            });
+            } finally {
             getSesion().close();
-        }
-        for (int i=0; i < listaCatalogos.size(); i++){
-            listaCatalogos.get(i).setDetalleses(null);
         }
         return listaCatalogos;
     }
@@ -96,13 +112,54 @@ public class CatalogosDAO extends HibernateUtil implements IBaseDAO<Catalogos, I
          List<Catalogos> lista= null;
        try {
             iniciaOperacion();
-            Query query = getSesion().createQuery("from Catalogos where = '"+ o +"'");
+            Query query = getSesion().createQuery("from Catalogos where c_categoria = '"+ o +"'");
             lista= query.list();
+            lista.stream().forEach((cat) -> {
+                cat.getDetalleses().size();
+            });
         } finally {
             getSesion().close();
         }
        
         return lista;
     }
+    
+    @Override
+    public List<Catalogos> findAllByName(String o) {
+        List<Catalogos> lista= null;
+       try {
+            iniciaOperacion();
+            Query query = getSesion().createQuery("from Catalogos where c_nombre = '"+ o +"'");
+            lista= query.list();
+            lista.stream().forEach((cat) -> {
+                cat.getDetalleses().size();
+            });
+        } finally {
+            getSesion().close();
+        }
+       
+        return lista;
+//         List<Catalogos> lista= null;
+//         List<Catalogos> encontrados = new ArrayList<Catalogos>();
+//       try {
+//              iniciaOperacion();
+//              lista= findAll();
+//              for(int i=0; i<= lista.size(); i++){
+//                  if(lista.get(i).getCNombre().contains(o)){
+//                      encontrados.add(lista.get(i));
+//                  }
+//              }
+//              lista.stream().forEach((cat) -> {
+//                 cat.getDetalleses().size();
+//              });
+//                      
+//        } finally {
+//            getSesion().close();
+//        }
+//       
+//        return encontrados;
+    }
 
+    
+    
 }

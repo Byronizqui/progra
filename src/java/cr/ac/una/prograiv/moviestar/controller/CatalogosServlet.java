@@ -6,22 +6,28 @@
 package cr.ac.una.prograiv.moviestar.controller;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import cr.ac.una.prograiv.moviestar.bl.CatalogosBL;
+import cr.ac.una.prograiv.moviestar.dao.CatalogosDAO;
 import cr.ac.una.prograiv.moviestar.domain.Catalogos;
+import cr.ac.una.prograiv.moviestar.domain.Categorias;
+import cr.ac.una.prograiv.moviestar.domain.CatalogosAdapter;
+import cr.ac.una.prograiv.moviestar.utils.HibernateUtil;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.hibernate.Session;
 
 /**
  *
- * @author Mery Zúñiga
+ * @author byron
  */
-@WebServlet(name = "CatalogosServlet", urlPatterns = {"/CatalogosServlet"})
 public class CatalogosServlet extends HttpServlet {
 
     /**
@@ -40,9 +46,13 @@ public class CatalogosServlet extends HttpServlet {
         try {
             //String para guardar el JSON generaro por al libreria GSON
             String json;
-            
             //Se crea el objeto Persona
             Catalogos c = new Catalogos();
+            
+            GsonBuilder b = new GsonBuilder();
+            
+            
+            Gson gson = b.registerTypeAdapter(Catalogos.class, new CatalogosAdapter()).create();
 
             //Se crea el objeto de la logica de negocio
             CatalogosBL cBL = new CatalogosBL();
@@ -53,44 +63,64 @@ public class CatalogosServlet extends HttpServlet {
             //**********************************************************************
             //se consulta cual accion se desea realizar
             //**********************************************************************
+
             String accion = request.getParameter("accion");
             switch (accion) {
-                case "consultarCatalogo":  
-                    json = new Gson().toJson(cBL.findAll(Catalogos.class.getName()));
+                case "showCatalogos":
+                    List<Catalogos> lis = cBL.findAllByOther(request.getParameter("id"));
+                    json = gson.toJson(lis);
                     out.print(json);
                     break;
-                case "eliminarCatalogo":   //Podría darse el caso de eliminar una pelicula o serie
-                    c.setCId(Integer.parseInt(request.getParameter("idCatalogo")));
-                     //Se elimina el objeto
+                case "consultarCatalogo":  
+                    List<Catalogos> list = cBL.findAll(Catalogos.class.getName());
+                    json = gson.toJson(list);
+                    out.print(json);
+                    break;
+                
+                case "ultimosCatalogos":
+                    List<Catalogos> l = cBL.findAll(Catalogos.class.getName());
+                    List<Catalogos> lN = new ArrayList<>();
+                    int cont =0;
+                    for (int i = l.size()-1; i > 0 && cont < 8; i--){
+                        lN.add(l.get(i));
+                        cont++;
+                    }
+                    json = gson.toJson(lN);
+                    out.print(json);
+                    break;
+                    
+                case "eliminarCatalogo":   
+                    c.setCId(Integer.parseInt(request.getParameter("codigo")));
                     cBL.delete(c);
 
                     //Se imprime la respuesta con el response
                     out.print("La pelicula fue eliminada correctamente");
                     break;
                     
-                case "buscarCatalogo":  
-                    //se consulta la persona por ID
-                    Catalogos consultado= new Catalogos();
-                    consultado.setCNombre(request.getParameter("nombreCatalogo"));
-                    consultado.setCDirector(request.getParameter("director"));
-                    consultado.setCActorPrin(request.getParameter("actorPrincipal"));
-                    //consultado.setCategorias(Integer.parseInt(request.getParameter("idCategoria")));
-                    c = cBL.findByOther(consultado);
+                 case "consultarCatalogosPorId":
+                    c = cBL.findById(Integer.parseInt(request.getParameter("idCatalogo")));
                     
                     //se pasa la informacion del objeto a formato JSON
-                    json = new Gson().toJson(c);
+                    idDummy = c.getCId();
+                    //se pasa la informacion del objeto a formato JSON
+                    json = gson.toJson(c);
+                    out.print(json);
+                    break;     
+                    
+                case "buscarCatalogo":  
+                    List<Catalogos> lista2 = cBL.findAll(Catalogos.class.getName());
+                    List<Catalogos> encontrados = new ArrayList<>();
+                    String name = request.getParameter("nombreCatalogo");
+                    for(int i=0; i< lista2.size(); i++){
+                        if(lista2.get(i).getCNombre().contains(name)){
+                            encontrados.add(lista2.get(i));
+                        }
+                    }
+                    json = gson.toJson(encontrados);
                     out.print(json);
                     break;
+                   
                     
-                case "consultarCatalogoPorId":  //Sería buscar pelicula o Serie por código que viene siendo el id 
-                    Catalogos buscada= new Catalogos();
-                    buscada.setCId(Integer.parseInt(request.getParameter("idCatalogo")));
-                    c = cBL.findByOther(buscada);
-                    
-                    //se pasa la informacion del objeto a formato JSON
-                    json = new Gson().toJson(c);
-                    out.print(json);
-                    break;    
                
                 case "agregarCatalogo": case "modificarCatalogo":   //Una pelicula o serie no deberia poder ser modificada
                     
@@ -99,14 +129,18 @@ public class CatalogosServlet extends HttpServlet {
                     c.setCActorPrin(request.getParameter("actor"));
                     c.setCCantidad(Integer.parseInt(request.getParameter("cantidad")));
                     c.setCDirector(request.getParameter("director"));
-                    //c.setCategorias(request.getParameter("idCategoria"));
+                    String cater = request.getParameter("categoria");
+                    Categorias categorias = new Categorias();
+                    categorias.setCId(Integer.parseInt(cater));
+                    c.setCategorias(categorias);
                     c.setCPrecAlqu(Float.parseFloat(request.getParameter("precioA")));
-                    c.setCPrecComp(Float.parseFloat(request.getParameter("precioC")));
+                    c.setCPrecComp(Float.parseFloat(request.getParameter("precioV")));
                     c.setCTipo(request.getParameter("tipo"));
-                    
-                    
-                    
-
+                    c.setCUrlImg(request.getParameter("urlImg"));
+                    c.setCDescrip(request.getParameter("descripc"));
+                    if (idDummy != -1){
+                        c.setCId(idDummy);
+                    }
                     boolean validacion= false;
                     if(accion.equals("agregarCatalogo")){ //es insertar catalogos
                         List<Catalogos> lista = cBL.findAll(Catalogos.class.getName());
@@ -145,9 +179,9 @@ public class CatalogosServlet extends HttpServlet {
         } catch (Exception e) {
             out.print("E~" + e.getMessage());
         }
-
     }
 
+    private int idDummy = -1;
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.

@@ -10,17 +10,13 @@ import cr.ac.una.prograiv.moviestar.bl.UsuariosBL;
 import cr.ac.una.prograiv.moviestar.domain.Usuarios;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.hibernate.Hibernate;
 
 /**
  *
@@ -56,7 +52,8 @@ public class UsuariosServelt extends HttpServlet {
             //**********************************************************************
             //se consulta cual accion se desea realizar
             //**********************************************************************
-            String accion = request.getParameter("accion");            switch (accion) {
+            String accion = request.getParameter("accion");            
+            switch (accion) {
                 case "consultarUsuarios":
                     json = new Gson().toJson(uBL.findAll(Usuarios.class.getName()));
                     out.print(json);
@@ -70,6 +67,7 @@ public class UsuariosServelt extends HttpServlet {
                     out.print("El usuario fue eliminado correctamente");
                     break;
                     
+             
                 case "consultarUsuariosPorCuenta":   //Se guarda un usuario y una contraseña en una persona, y se busca si la persona existe
                     //se consulta la persona por ID
                     Usuarios consultado= new Usuarios();
@@ -81,31 +79,34 @@ public class UsuariosServelt extends HttpServlet {
                     json = new Gson().toJson(u);
                     out.print(json);
                     break;
-                                   
+                    
+                    
+                case "consultarUsuariosById":
+                    u = uBL.findById(Integer.parseInt(request.getParameter("idUsuario")));
+                    //se pasa la informacion del objeto a formato JSON
+                    json = new Gson().toJson(u);
+                    out.print(json);
+                    break;
+                    
                 case "agregarUsuario": case "modificarUsuario":
 
                     //Se llena el objeto con los datos enviados por AJAX por el metodo post
+                    u.setUTipo(request.getParameter("tipo"));
                     u.setUId(Integer.parseInt(request.getParameter("idUsuario")));
                     u.setUNombre(request.getParameter("nombre"));
                     u.setUApellidos(request.getParameter("apellidos"));
                    
                     String fechatxt = request.getParameter("fechaNacimiento");
-                    DateFormat format = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH);
-                    Date date = format.parse(fechatxt);
-                    
-                    u.setUFechaNac(date);
+                    Date date = new SimpleDateFormat("yyyy-MM-dd").parse(fechatxt);
+                    u.setUFechaNac(new java.sql.Date(date.getTime()));
                     u.setUContrasena(request.getParameter("contrasena"));
                     u.setUCorreo(request.getParameter("correo"));
                     u.setUTelCasa(request.getParameter("telCasa"));
                     u.setUTelCel(request.getParameter("telCel"));
-                    u.setUTipo("user");
                     u.setUUsuario(request.getParameter("usuario"));
                     u.setUDireccion(request.getParameter("direccion"));
-                    
-                    
-
                     boolean validacion= false;
-                    if(accion.equals("agregarUsuario")){ //es insertar usuarios
+                    if(accion.equals("agregarUsuarioAdmin")){ //es insertar usuarios
                         List<Usuarios> lista = uBL.findAll(Usuarios.class.getName());
                         for(Usuarios usuarios : lista){
                             if(usuarios.getUUsuario() == null ? u.getUUsuario() == null : usuarios.getUUsuario().equals(u.getUUsuario())){

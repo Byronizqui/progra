@@ -1,18 +1,18 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated May 8, 2016 3:08:06 AM by Hibernate Tools 4.3.1 -->
+<!-- Generated 14/05/2016 08:58:01 AM by Hibernate Tools 4.3.1 -->
 <hibernate-mapping>
-    <class name="cr.ac.una.prograiv.moviestar.domain.Catalogos" table="Catalogos" catalog="MovieStar" optimistic-lock="version">
-        <id name="CId" type="int">
+    <class name="cr.ac.una.prograiv.moviestar.domain.Catalogos" table="catalogos" catalog="moviestar" optimistic-lock="version">
+        <id name="CId" type="java.lang.Integer">
             <column name="c_id" />
-            <generator class="assigned" />
+            <generator class="identity" />
         </id>
         <many-to-one name="categorias" class="cr.ac.una.prograiv.moviestar.domain.Categorias" fetch="select">
             <column name="c_categoria" />
         </many-to-one>
         <property name="CNombre" type="string">
-            <column name="c_nombre" length="15" />
+            <column name="c_nombre" length="45" />
         </property>
         <property name="CDirector" type="string">
             <column name="c_director" length="15" />
@@ -32,7 +32,13 @@
         <property name="CPrecComp" type="java.lang.Float">
             <column name="c_prec_comp" precision="12" scale="0" />
         </property>
-        <set name="detalleses" table="Detalles" inverse="true" lazy="true" fetch="select">
+        <property name="CUrlImg" type="string">
+            <column name="c_urlImg" length="175" />
+        </property>
+        <property name="CDescrip" type="string">
+            <column name="c_descrip" />
+        </property>
+        <set name="detalleses" table="detalles" inverse="true" lazy="true" fetch="select">
             <key>
                 <column name="d_IdC" not-null="true" />
             </key>

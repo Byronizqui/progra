@@ -59,6 +59,20 @@ public class UsuariosDAO extends HibernateUtil implements IBaseDAO<Usuarios, Int
             getSesion().close();
         }
     }
+    
+    @Override
+    public Usuarios findById(Integer id) {
+        Usuarios us = null;
+
+        try {
+            iniciaOperacion();
+            us = (Usuarios) getSesion().get(Usuarios.class, id);
+            us.getOrdeneses().size();
+        } finally {
+            getSesion().close();
+        }
+        return us;
+    }
 
     @Override
     public Usuarios findByOther(Usuarios u) {
@@ -68,7 +82,7 @@ public class UsuariosDAO extends HibernateUtil implements IBaseDAO<Usuarios, Int
         for (int i =0; i <= aux.size(); i++) {
                 if (aux.get(i).getUCorreo().equals(u.getUCorreo())  && aux.get(i).getUContrasena().equals(u.getUContrasena())) {
                     usuario = aux.get(i);
-                    usuario.setOrdeneses(null);
+                    usuario.getOrdeneses().size();
                     return usuario;
             }
         }
@@ -81,11 +95,12 @@ public class UsuariosDAO extends HibernateUtil implements IBaseDAO<Usuarios, Int
         try {
             iniciaOperacion();
             listaUsuarios = getSesion().createQuery("from Usuarios").list();
+           listaUsuarios.stream().forEach((cat) -> {
+                cat.getOrdeneses().size();
+            });
         } finally {
             getSesion().close();
         }
-        for (int i =0; i < listaUsuarios.size(); i++)
-            listaUsuarios.get(i).setOrdeneses(null);
         return listaUsuarios;
     }
 
@@ -96,6 +111,26 @@ public class UsuariosDAO extends HibernateUtil implements IBaseDAO<Usuarios, Int
             iniciaOperacion();
             Query query = getSesion().createQuery("from Usuarios where = '"+ o +"'");
             lista= query.list();
+            lista.stream().forEach((cat) -> {
+                cat.getOrdeneses().size();
+            });
+        } finally {
+            getSesion().close();
+        }
+       
+        return lista;
+    }
+    
+    @Override
+    public List<Usuarios> findAllByName(String o) {
+         List<Usuarios> lista= null;
+       try {
+            iniciaOperacion();
+            Query query = getSesion().createQuery("from Usuarios where c_nombre = '"+ o +"'");
+            lista= query.list();
+            lista.stream().forEach((cat) -> {
+                cat.getOrdeneses().size();
+            });
         } finally {
             getSesion().close();
         }

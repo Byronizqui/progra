@@ -75,6 +75,20 @@ public class OrdenesDAO extends HibernateUtil implements IBaseDAO<Ordenes, Integ
     }
 
     @Override
+    public Ordenes findById(Integer id) {
+        Ordenes or = null;
+
+        try {
+            iniciaOperacion();
+            or = (Ordenes) getSesion().get(Ordenes.class, id);
+        } finally {
+            getSesion().close();
+        }
+        return or;
+    }
+    
+    
+    @Override
     public Ordenes findByOther(Ordenes o) {
        Ordenes ordenes = null;
        
@@ -95,6 +109,21 @@ public class OrdenesDAO extends HibernateUtil implements IBaseDAO<Ordenes, Integ
             iniciaOperacion();   //Hay que probar si funciona
             Query query = getSesion().createQuery("from Ordenes where o_usuario= '"+ variable +"'" +"or o_estado= '" +variable +"'");
             lista= query.list();
+        } finally {
+            getSesion().close();
+        }
+       
+        return lista;
+    }
+    
+    @Override
+    public List<Ordenes> findAllByName(String o) {
+         List<Ordenes> lista= null;
+       try {
+            iniciaOperacion();
+            Query query = getSesion().createQuery("from Ordenes where c_nombre = '"+ o +"'");
+            lista= query.list();
+           
         } finally {
             getSesion().close();
         }

@@ -33,6 +33,11 @@ public class DetallesBL extends BaseBL implements IBaseBL<Detalles, Integer>{
     public void delete(Detalles o) {
         this.getDao(o.getClass().getName()).delete(o);
     }
+    
+    @Override
+    public Detalles findById(Integer o) {
+        return (Detalles) this.getDao(Detalles.class.getName()).findById(o);
+    }
 
     @Override
     public Detalles findByOther(Detalles o) {
@@ -47,5 +52,10 @@ public class DetallesBL extends BaseBL implements IBaseBL<Detalles, Integer>{
     @Override
     public List<Detalles> findAll(String o) {
         return this.getDao(o).findAll();
+    }
+    
+    @Override
+    public List<Detalles> findAllByName(String className) {
+        return this.getDao(Detalles.class.getName()).findAllByName(className);
     }
 }

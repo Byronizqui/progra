@@ -1,5 +1,5 @@
 package cr.ac.una.prograiv.moviestar.domain;
-// Generated May 8, 2016 3:08:05 AM by Hibernate Tools 4.3.1
+// Generated 14/05/2016 08:57:58 AM by Hibernate Tools 4.3.1
 
 
 import java.util.HashSet;
@@ -11,7 +11,7 @@ import java.util.Set;
 public class Categorias  implements java.io.Serializable {
 
 
-     private int CId;
+     private Integer CId;
      private String CNombre;
      private String CObs;
      private Set catalogoses = new HashSet(0);
@@ -20,23 +20,21 @@ public class Categorias  implements java.io.Serializable {
     }
 
 	
-    public Categorias(int CId, String CNombre, String CObs) {
-        this.CId = CId;
+    public Categorias(String CNombre, String CObs) {
         this.CNombre = CNombre;
         this.CObs = CObs;
     }
-    public Categorias(int CId, String CNombre, String CObs, Set catalogoses) {
-       this.CId = CId;
+    public Categorias(String CNombre, String CObs, Set catalogoses) {
        this.CNombre = CNombre;
        this.CObs = CObs;
        this.catalogoses = catalogoses;
     }
    
-    public int getCId() {
+    public Integer getCId() {
         return this.CId;
     }
     
-    public void setCId(int CId) {
+    public void setCId(Integer CId) {
         this.CId = CId;
     }
     public String getCNombre() {

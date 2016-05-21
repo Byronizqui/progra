@@ -38,6 +38,11 @@ public class UsuariosBL extends BaseBL implements IBaseBL<Usuarios, Integer>{
     public Usuarios findByOther(Usuarios o) {
         return (Usuarios) this.getDao(o.getClass().getName()).findByOther(o);
     }
+    
+    @Override
+    public Usuarios findById(Integer o) {
+        return (Usuarios) this.getDao(Usuarios.class.getName()).findById(o);
+    }
 
     @Override
     public List<Usuarios> findAllByOther(String o) {
@@ -47,6 +52,11 @@ public class UsuariosBL extends BaseBL implements IBaseBL<Usuarios, Integer>{
     @Override
     public List<Usuarios> findAll(String o) {
         return this.getDao(o).findAll();
+    }
+    
+    @Override
+    public List<Usuarios> findAllByName(String className) {
+        return this.getDao(Usuarios.class.getName()).findAllByName(className);
     }
     
 }

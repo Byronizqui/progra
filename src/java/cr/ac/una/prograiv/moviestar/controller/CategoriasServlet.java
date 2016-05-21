@@ -6,11 +6,17 @@
 package cr.ac.una.prograiv.moviestar.controller;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import cr.ac.una.prograiv.moviestar.bl.CategoriasBL;
+import cr.ac.una.prograiv.moviestar.domain.Catalogos;
+import cr.ac.una.prograiv.moviestar.domain.CatalogosAdapter;
 import cr.ac.una.prograiv.moviestar.domain.Categorias;
+import cr.ac.una.prograiv.moviestar.domain.CategoriasAdapter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.HashSet;
 import java.util.List;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -43,7 +49,11 @@ public class CategoriasServlet extends HttpServlet {
             
             //Se crea el objeto Categorías
             Categorias c = new Categorias();
-
+            
+            GsonBuilder b = new GsonBuilder();
+            
+            
+            Gson gson = b.registerTypeAdapter(Categorias.class, new CategoriasAdapter()).create();
             //Se crea el objeto de la logica de negocio
             CategoriasBL cBL = new CategoriasBL();
 
@@ -60,9 +70,10 @@ public class CategoriasServlet extends HttpServlet {
                     out.print(json);
                     break;
                 case "eliminarCategorias":  //que no debería necesitarse eliminar categorias, pero igual se implementa por si se necesitara
-                    c.setCId(Integer.parseInt(request.getParameter("idCategoría")));  //idCategoria viene siendo como un numero
+                    c.setCId(Integer.parseInt(request.getParameter("idCategoria")));  //idCategoria viene siendo como un numero
                      //Se elimina el objeto
                     cBL.delete(c);
+                    
 
                     //Se imprime la respuesta con el response
                     out.print("La categoría fue eliminada correctamente");
@@ -77,13 +88,24 @@ public class CategoriasServlet extends HttpServlet {
                     json = new Gson().toJson(c);
                     out.print(json);
                     break;
+                    
+                case "consultarCategoriasPorId": 
+                    c = cBL.findById(Integer.parseInt(request.getParameter("idCategoria")));
+                    //se pasa la informacion del objeto a formato JSON
+                    
+                    idDummy = c.getCId();
+                    json = gson.toJson(c);
+                    out.print(json);
+                    break;
+                    
                
                 case "agregarCategoria": case "modificarCategoria":  //Un modificar categoria no se usa
 
                     //Se llena el objeto con los datos enviados por AJAX por el metodo post
                     c.setCNombre(request.getParameter("nombre"));
                     c.setCObs(request.getParameter("observaciones"));
-                   
+                    if (idDummy != -1)
+                        c.setCId(idDummy);
                     boolean validacion= false;
                     if(accion.equals("agregarCategoria")){ //es insertar categorias
                         List<Categorias> lista = cBL.findAll(Categorias.class.getName());
@@ -112,6 +134,13 @@ public class CategoriasServlet extends HttpServlet {
                     
                     break;
                     
+                case "carrusel": case "catalogos":
+                    String text = request.getParameter("categoria");
+                    
+                    json = gson.toJson(cBL.findAllByOther(text));
+                    // Hay que serializar a pata como trolazo
+                    out.print(json);
+                    break;
                 default:
                     out.print("E~No se indico la acción que se desea realizar");
                     break;
@@ -124,7 +153,7 @@ public class CategoriasServlet extends HttpServlet {
         }
 
     }
-
+        private int idDummy = -1;
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.

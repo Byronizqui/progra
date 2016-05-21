@@ -24,6 +24,14 @@ a {
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
 }
 
+.container2 {
+    background: transparent;
+    margin: 40px auto;
+    padding: 20px 40px 50px;
+    max-width: 800px;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+}
+
 .SeeMore2 {
 }
 

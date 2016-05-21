@@ -5,9 +5,7 @@
  */
 package cr.ac.una.prograiv.moviestar.bl;
 
-import cr.ac.una.prograiv.moviestar.domain.Catalogos;
 import cr.ac.una.prograiv.moviestar.domain.Categorias;
-import cr.ac.una.prograiv.moviestar.domain.Usuarios;
 import java.util.List;
 
 /**
@@ -34,10 +32,14 @@ public class CategoriasBL extends BaseBL implements IBaseBL<Categorias, Integer>
     public void delete(Categorias o) {
         this.getDao(o.getClass().getName()).delete(o);
     }
-
     @Override
     public Categorias findByOther(Categorias o) {
         return (Categorias) this.getDao(o.getClass().getName()).findByOther(o);
+    }
+    
+    @Override
+    public Categorias findById(Integer o) {
+        return (Categorias) this.getDao(Categorias.class.getName()).findById(o);
     }
 
     @Override
@@ -45,8 +47,14 @@ public class CategoriasBL extends BaseBL implements IBaseBL<Categorias, Integer>
         return this.getDao(Categorias.class.getName()).findAllByOther(o);
     }
     
+    @Override
     public List<Categorias> findAll(String o) {
         return this.getDao(o).findAll();
+    }
+    
+    @Override
+    public List<Categorias> findAllByName(String className) {
+        return this.getDao(Categorias.class.getName()).findAllByName(className);
     }
     
 }

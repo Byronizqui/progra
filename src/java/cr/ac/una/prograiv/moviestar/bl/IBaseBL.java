@@ -20,4 +20,6 @@ public interface IBaseBL <T,K> {
     public abstract T findByOther (T o);
     public abstract List<T> findAllByOther(String o);
     public abstract  List<T> findAll(String o);
+    public abstract T findById (K o);
+    public abstract List<T> findAllByName(String o);
 }

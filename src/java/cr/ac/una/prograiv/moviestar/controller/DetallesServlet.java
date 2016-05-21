@@ -6,8 +6,12 @@
 package cr.ac.una.prograiv.moviestar.controller;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import cr.ac.una.prograiv.moviestar.bl.DetallesBL;
+import cr.ac.una.prograiv.moviestar.domain.Catalogos;
+import cr.ac.una.prograiv.moviestar.domain.CatalogosAdapter;
 import cr.ac.una.prograiv.moviestar.domain.Detalles;
+import cr.ac.una.prograiv.moviestar.domain.DetallesAdapter;
 import cr.ac.una.prograiv.moviestar.domain.Ordenes;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -45,7 +49,8 @@ public class DetallesServlet extends HttpServlet {
         try {
             //String para guardar el JSON generaro por al libreria GSON
             String json;
-            
+            GsonBuilder b = new GsonBuilder();
+            Gson gson = b.registerTypeAdapter(Detalles.class, new DetallesAdapter()).create();
             //Se crea el objeto Persona
             Detalles d = new Detalles();
 
@@ -61,7 +66,7 @@ public class DetallesServlet extends HttpServlet {
             String accion = request.getParameter("accion");
             switch (accion) {
                 case "consultarDetalles":
-                    json = new Gson().toJson(dBL.findAll(Ordenes.class.getName()));
+                    json = gson.toJson(dBL.findAll(Ordenes.class.getName()));
                     out.print(json);
                     break;
                 case "eliminarOrden":
@@ -73,7 +78,7 @@ public class DetallesServlet extends HttpServlet {
                     Detalles buscado= null;
                     //buscado.setFk_idOrdenes(Integer.parseInt(request.getParameter("idOrden")));
                     d = dBL.findByOther(buscado);
-                    json = new Gson().toJson(d);
+                    json = gson.toJson(d);
                     out.print(json);
                     break;
                 

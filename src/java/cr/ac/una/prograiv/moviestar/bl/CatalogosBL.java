@@ -39,12 +39,23 @@ public class CatalogosBL extends BaseBL implements IBaseBL<Catalogos, Integer>{
     }
 
     @Override
+    public Catalogos findById(Integer o) {
+        return (Catalogos) this.getDao(Catalogos.class.getName()).findById(o);
+    }
+    
+    @Override
     public List<Catalogos> findAllByOther(String className) {
         return this.getDao(Catalogos.class.getName()).findAllByOther(className);
     }
     
+    @Override
     public List<Catalogos> findAll(String o) {
         return this.getDao(o).findAll();
+    }
+    
+    @Override
+    public List<Catalogos> findAllByName(String className) {
+        return this.getDao(Catalogos.class.getName()).findAllByName(className);
     }
     
 }

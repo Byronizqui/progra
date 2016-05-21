@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated May 8, 2016 3:08:06 AM by Hibernate Tools 4.3.1 -->
+<!-- Generated 14/05/2016 08:58:01 AM by Hibernate Tools 4.3.1 -->
 <hibernate-mapping>
-    <class name="cr.ac.una.prograiv.moviestar.domain.Media" table="Media" catalog="MovieStar" optimistic-lock="version">
+    <class name="cr.ac.una.prograiv.moviestar.domain.Media" table="media" catalog="moviestar" optimistic-lock="version">
         <id name="id" type="java.lang.Integer">
             <column name="id" />
             <generator class="identity" />
@@ -13,6 +13,9 @@
         </property>
         <property name="categoria" type="string">
             <column name="categoria" length="30" />
+        </property>
+        <property name="catalogo" type="string">
+            <column name="catalogo" length="15" />
         </property>
     </class>
 </hibernate-mapping>

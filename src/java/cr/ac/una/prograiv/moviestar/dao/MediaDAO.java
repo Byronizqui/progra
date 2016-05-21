@@ -10,16 +10,13 @@ import cr.ac.una.prograiv.moviestar.utils.HibernateUtil;
 import java.io.Serializable;
 import java.util.List;
 import org.hibernate.HibernateException;
+import org.hibernate.Query;
 
 /**
  *
  * @author Byron
  */
 public class MediaDAO extends HibernateUtil implements IBaseDAO<Media, Integer>{
-
-    public MediaDAO() {
-        super();
-    }
     @Override
     public void save(Media o) {
         try {
@@ -62,6 +59,19 @@ public class MediaDAO extends HibernateUtil implements IBaseDAO<Media, Integer>{
             getSesion().close();
         }
     }
+    
+    @Override
+    public Media findById(Integer id) {
+        Media me = null;
+
+        try {
+            iniciaOperacion();
+            me = (Media) getSesion().get(Media.class, id);
+        } finally {
+            getSesion().close();
+        }
+        return me;
+    }
 
     @Override
     public Media findByOther(Media o) {
@@ -100,6 +110,20 @@ public class MediaDAO extends HibernateUtil implements IBaseDAO<Media, Integer>{
         }
 
         return listaMedia;
+    }
+    
+    @Override
+    public List<Media> findAllByName(String o) {
+         List<Media> lista= null;
+       try {
+            iniciaOperacion();
+            Query query = getSesion().createQuery("from Media where c_nombre = '"+ o +"'");
+            lista= query.list();
+        } finally {
+            getSesion().close();
+        }
+       
+        return lista;
     }
     
 }

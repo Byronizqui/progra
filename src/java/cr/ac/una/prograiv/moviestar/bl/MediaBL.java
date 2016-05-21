@@ -34,6 +34,11 @@ public class MediaBL extends BaseBL implements IBaseBL<Media, Integer>{
     }
 
     @Override
+    public Media findById(Integer o) {
+        return (Media) this.getDao(Media.class.getName()).findById(o);
+    }
+    
+    @Override
     public Media findByOther(Media o) {
         return (Media) this.getDao(o.getClass().getName()).findByOther(o);
     }
@@ -46,6 +51,11 @@ public class MediaBL extends BaseBL implements IBaseBL<Media, Integer>{
     @Override
     public List<Media> findAll(String o) {
         return this.getDao(o).findAll();
+    }
+    
+    @Override
+    public List<Media> findAllByName(String className) {
+        return this.getDao(Media.class.getName()).findAllByName(className);
     }
     
 }

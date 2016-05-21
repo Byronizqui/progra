@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated May 8, 2016 3:08:06 AM by Hibernate Tools 4.3.1 -->
+<!-- Generated 14/05/2016 08:58:01 AM by Hibernate Tools 4.3.1 -->
 <hibernate-mapping>
-    <class name="cr.ac.una.prograiv.moviestar.domain.Detalles" table="Detalles" catalog="MovieStar" optimistic-lock="version">
+    <class name="cr.ac.una.prograiv.moviestar.domain.Detalles" table="detalles" catalog="moviestar" optimistic-lock="version">
         <composite-id name="id" class="cr.ac.una.prograiv.moviestar.domain.DetallesId">
             <key-property name="DIdO" type="int">
                 <column name="d_IdO" />

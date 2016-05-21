@@ -1,12 +1,12 @@
-$(document).ready(function() {
+ $(document).ready(function() {
     mostrarSlider();
+    
 });
 
  $(document).ready(function() {
     $('.carousel').carousel({
       interval: 6000
     });
-    
   });
   function dibujarSlider(data){
     $("#ajSlider").html("");
@@ -29,16 +29,6 @@ $(document).ready(function() {
  function show(id){
     document.getElementById(id).style.display = "block";
 };
-
-$('.SeeMore2').click(function(){
-    var $this = $(this);
-    $this.toggleClass('SeeMore2');
-    if($this.hasClass('SeeMore2')){
-            $this.text('Leer Más');			
-    } else {
-            $this.text('Leer Menos');
-    }
-});
 
 
 function testInputData(myfield, restrictionType) {

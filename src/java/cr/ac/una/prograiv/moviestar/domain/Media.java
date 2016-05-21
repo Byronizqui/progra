@@ -1,5 +1,5 @@
 package cr.ac.una.prograiv.moviestar.domain;
-// Generated May 8, 2016 3:08:05 AM by Hibernate Tools 4.3.1
+// Generated 14/05/2016 08:57:58 AM by Hibernate Tools 4.3.1
 
 
 
@@ -12,13 +12,15 @@ public class Media  implements java.io.Serializable {
      private Integer id;
      private String url;
      private String categoria;
+     private String catalogo;
 
     public Media() {
     }
 
-    public Media(String url, String categoria) {
+    public Media(String url, String categoria, String catalogo) {
        this.url = url;
        this.categoria = categoria;
+       this.catalogo = catalogo;
     }
    
     public Integer getId() {
@@ -41,6 +43,13 @@ public class Media  implements java.io.Serializable {
     
     public void setCategoria(String categoria) {
         this.categoria = categoria;
+    }
+    public String getCatalogo() {
+        return this.catalogo;
+    }
+    
+    public void setCatalogo(String catalogo) {
+        this.catalogo = catalogo;
     }
 
 

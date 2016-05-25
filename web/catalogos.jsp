@@ -17,7 +17,7 @@
         <link rel="stylesheet" href="css/creative.css">
         <script src="js/jquery.min.js"></script>
         <script src="js/bootstrap.min.js"></script>
-        
+        <script type="text/javascript" src="js/carrito.js"></script>
     </head>
     <body>
         <%@ include file="Fragmentos/header.jspf" %>

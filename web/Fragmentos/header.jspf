@@ -18,16 +18,18 @@
                         <li class="active"><a href="index.jsp">Inicio</a></li>
                         <li><a href="#footer">Nosotros</a></li>
                         <li class="dropdown">
-                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">Películas<span class="caret"></span></a>
-                    <ul class="dropdown-menu" id="pelisub">
-                    </ul>
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">Películas<span class="caret"></span></a>
+                            <ul class="dropdown-menu" id="pelisub">
+                            </ul>
                         </li>
                         <li class="dropdown">
                             <a class="dropdown-toggle" data-toggle="dropdown" href="#">Series<span class="caret"></span></a>
-                    <ul class="dropdown-menu" id="seriessub">
-                    </ul>
+                            <ul class="dropdown-menu" id="seriessub">
+                            </ul>
+                        </li>
                     <li><a href="">Contáctanos</a></li>
                     <li><a href="admin.jsp">Administrar</a></li>
+                    <li><a href="carrito.jsp">Ver carrito</a></li>
                     </ul>
                 </div> 
                 <form id="loginForm" class="navbar-form navbar-right" method="post">

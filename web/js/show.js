@@ -31,10 +31,14 @@ function cargarCategorias(id){
 function dibujarCatalogo(data){
     $('#show').html("");
     for (var i =0; i < data.length; i++){
-        $('#show').append("<div class='col-lg-4 col-sm-6'"+
+        $('#show').append("<form method='post' action='carrito.jsp'><div class='col-lg-4 col-sm-6'"+
                 "><div class='portfolio-box'><img src="+data[i].CUrlImg+
                 " class='img-responsive' alt=''>"+
                             "<div class='portfolio-box-caption'>"+
+                            "<input type='hidden' name='nombre' value='"+data[i].CNombre+"'/>"+
+                            "<input type='hidden' name='id' value='"+data[i].CId+"'/>"+
+                            "<input type='hidden' name='alq' value='"+data[i].CPrecAlqu+"'/>"+
+                            "<input type='hidden' name='com' value='"+data[i].CPrecComp+"'/>"+
                                 "<div class='portfolio-box-caption-content'>"+
                                     "<div class='project-category text-faded'>"+data[i].CNombre+
                                     "</div>"+
@@ -42,13 +46,13 @@ function dibujarCatalogo(data){
                                          "<br/>"+
                                         "Precio de venta: ₡" + data[i].CPrecComp +"<br/>"+
                                         "Precio de renta: ₡"+ data[i].CPrecAlqu +"<br/>"+
-                                        "<button type='submit' class='btn btn-default'"+
-                                        "><span class='glyphicon glyphicon-shopping-cart'></span></button>"+
+                                        "<button type='button' class='btn btn-default' onclick=add('"+data[i].CId+"','"+encodeURIComponent(data[i].CNombre)+"','"
+                                        +data[i].CPrecAlqu+"','"+data[i].CPrecComp+"')><span class='glyphicon glyphicon-shopping-cart'></span></button>"+
                                     "</div>"+
                                 "</div>"+
                             "</div>"+
                         "</div>"+
-                    "</div> ");
+                    "</div> </form>");
     }
     $('#show').append("<script src="+ "js/header.js"+"/></script>");
 }

@@ -24,7 +24,7 @@ function consultarUsuarios() {
             var script = document.createElement('script');
                 script.innerHTML = "$(document).ready(function() { "+
                                     "$('#tablaUsuarios').paginate({ "+
-                                            "paginationButtonsClass:'ui basic default button',"+
+                                            "paginationButtonsClass:'ui basic button .btn-primary',"+
                                             "paginationButtonsContainerClass:'ui right aligned',"+
                                             "previousButtonContent: 'Anterior',"+
                                             "nextButtonContent: 'Siguiente',"+
@@ -145,7 +145,7 @@ function consultarUsuariosById(id) {
            var script = document.createElement('script');
                 script.innerHTML = "$(document).ready(function() { "+
                                     "$('#tablaUsuarios').paginate({ "+
-                                            "paginationButtonsClass:'ui basic default button',"+
+                                            "paginationButtonsClass:'ui basic button .btn-primary',"+
                                             "paginationButtonsContainerClass:'ui right aligned',"+
                                             "previousButtonContent: 'Anterior',"+
                                             "nextButtonContent: 'Siguiente',"+
@@ -221,7 +221,7 @@ function enviarUsuario() {
                 var script = document.createElement('script');
                 script.innerHTML = "$(document).ready(function() { "+
                                     "$('#tablaUsuarios').paginate({ "+
-                                            "paginationButtonsClass:'ui basic default button',"+
+                                            "paginationButtonsClass:'ui basic button .btn-primary',"+
                                             "paginationButtonsContainerClass:'ui right aligned',"+
                                             "previousButtonContent: 'Anterior',"+
                                             "nextButtonContent: 'Siguiente',"+

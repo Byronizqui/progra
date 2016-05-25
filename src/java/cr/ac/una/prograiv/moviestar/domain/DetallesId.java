@@ -36,6 +36,7 @@ public class DetallesId  implements java.io.Serializable {
     }
 
 
+     @Override
    public boolean equals(Object other) {
          if ( (this == other ) ) return true;
 		 if ( (other == null ) ) return false;
@@ -46,6 +47,7 @@ public class DetallesId  implements java.io.Serializable {
  && (this.getDIdC()==castOther.getDIdC());
    }
    
+     @Override
    public int hashCode() {
          int result = 17;
          
